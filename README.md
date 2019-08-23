@@ -1,2 +1,2 @@
 react-study-umi-dva
-mgp
+mgp init
