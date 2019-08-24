@@ -1,7 +1,7 @@
-import styles from './index.css';
+import styles from './index.scss';
 import { formatMessage } from 'umi-plugin-locale';
 
-export default function() {
+export default function App () {
   return (
     <div className={styles.normal}>
       <div className={styles.welcome} />
