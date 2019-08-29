@@ -6,6 +6,7 @@ function SideMenu(props) {
     const {list, defaultValue, value} = props;
     const defaultOpen = defaultValue[0];
     const defaultSelect = defaultValue[1];
+    console.debug('默认打开', defaultOpen)
     return (
         <Menu
             mode="inline"

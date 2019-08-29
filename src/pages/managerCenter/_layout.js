@@ -7,64 +7,11 @@ import router from 'umi/router';
 import { connect } from 'dva';
 const { Content, Sider } = Layout;
 function ManagerCenter (props) {
-    const { dispatch, auth } = props;
-    const defaultValue = ['1','sub1','child1'];
-    const [selectValue, setSelectValue] = useState('');
-    const headerMenuList = [
-        {
-            value: '1',
-            label: '管理中心',
-        },
-        {
-            value: '2',
-            label: '数据中心'
-        },
-        {
-            value: '3',
-            label: '设置'
-        }
-    ];
-    const sideMenuList = [
-        {
-            value: 'sub1',
-            iconType: 'user',
-            label: '用户管理',
-            children: [
-                {
-                    value: 'child1',
-                    label: '用户列表',
-                    target: '/managerCenter/userList'
-                },
-                {
-                    value: 'child2',
-                    label: '角色列表',
-                    target: '/managerCenter/roleList'
-                },
-                {
-                    value: 'child3',
-                    label: '权限列表',
-                    target: '/managerCenter/rightList'
-                }
-            ]
-        },
-        {
-            value: 'sub2',
-            iconType: 'laptop',
-            label: '设备管理',
-            children: [
-                {
-                    value: 'child4',
-                    label: '设备列表',
-                    target: '/managerCenter/deviceList'
-                },
-                {
-                    value: 'child5',
-                    label: '设备事件',
-                    target: '/managerCenter/deviceEventsList'
-                }
-            ]
-        }
-    ];
+    const { dispatch, auth, page } = props;
+    const defaultValue = ['sub1','child1'];
+    const [selectValue, setSelectValue] = useState(['sub1','child1']);
+    const headerMenuList = page.headerMenuList;
+    const sideMenuList = page.sideMenuList;
     useEffect(() => {
         let username = auth.userInfo.username;
         if(!username) {
@@ -74,16 +21,6 @@ function ManagerCenter (props) {
     }, [auth]);
     function changeTabMenu(e) {
         let {key} = e;
-        for(const item of props.headerMenuList) {
-            if (item.value === key) {
-                setSelectValue(props.menuPathInfo.pathNameList);
-                props.setCurrentHeader({
-                    value: key,
-                    label: item.value
-                })
-                break;
-            }
-        }
     }
     function changeSideMenu(e) {
         let {keyPath} = e;
@@ -107,14 +44,13 @@ function ManagerCenter (props) {
                 break;
             }
         }
+        setSelectValue(keyPath);
         router.push(target);
     }
     function onLogout() {
         dispatch({
-            type: 'auth/setUserInfo',
-            payload: {
-                username: ''
-            }
+            type: 'auth/logout',
+            payload: {}
         });
     }
     function onBack () {
@@ -149,4 +85,4 @@ function ManagerCenter (props) {
         </Layout>
     )
 }
-export default connect(({auth}) => ({auth}))(ManagerCenter);
+export default connect(({auth, page}) => ({auth, page}))(ManagerCenter);

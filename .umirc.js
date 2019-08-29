@@ -15,13 +15,13 @@ export default {
         default: 'en-US',
       },
       routes: [
-        { path: '/', component: './home' },
+        { path: '/', component: './index'},
         { path: '/managerCenter', component: './managerCenter/_layout',
           routes: [
             { path: '/managerCenter/deviceList', component: './managerCenter/deviceList' },
             { path: '/managerCenter/deviceEventsList', component: './managerCenter/deviceEventsList' },
           ]
-        },
+        }
       ],
     }],
   ],

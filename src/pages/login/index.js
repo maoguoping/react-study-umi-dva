@@ -13,15 +13,21 @@ function Login (props) {
     const { dispatch, auth } = props;
     const {from} = props.location.state || {from: {pathname: '/managerCenter/deviceList'}};
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+    useEffect(() => {
+        console.debug('更新auth', auth)
+        if(auth.userInfo.username) {
+            setRedirectToReferrer(true);
+        }
+    },[auth, auth.userInfo]);
     function loginIn(data) {
         let {username, password} = data;
         dispatch({
-            type: 'auth/setUserInfo',
+            type: 'auth/login',
             payload: {
                 username
             },
-          });
-        router.push('/managerCenter/deviceList');
+        });
+        // router.push('/managerCenter/deviceList');
     }
     if (redirectToReferrer) {
         return <Redirect to={from}></Redirect>
