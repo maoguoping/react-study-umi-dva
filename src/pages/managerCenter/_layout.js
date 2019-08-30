@@ -15,13 +15,6 @@ function ManagerCenter (props) {
     const sideMenuList = page.sideMenuList;
     const innerPageList = page.innerPageList;
     useEffect(() => {
-        let username = auth.userInfo.username;
-        if(!username) {
-            router.push('/login');
-        }
-        console.debug('用户名', username);
-    }, [auth]);
-    useEffect(() => {
         console.debug('页面信息', page)
         let arr = [page.currentHeader.label];
         page.currentSide.forEach(item => {

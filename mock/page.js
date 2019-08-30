@@ -44,7 +44,13 @@ export default {
                             {
                                 value: 'child1',
                                 label: '用户列表',
-                                target: '/managerCenter/userList'
+                                target: '/managerCenter/userList',
+                                innerPage: [
+                                    {
+                                        label: '用户详情',
+                                        target: '/managerCenter/userList/userDetail'
+                                    }
+                                ]
                             },
                             {
                                 value: 'child2',

@@ -1,4 +1,4 @@
-
+import { routeList } from './config/router'
 // ref: https://umijs.org/config/
 export default {
   treeShaking: true,
@@ -14,18 +14,19 @@ export default {
         enable: true,
         default: 'en-US',
       },
-      routes: [
-        { path: '/', component: './index'},
-        { path: '/managerCenter', component: './managerCenter/_layout',
-          routes: [
-            { path: '/managerCenter/deviceList', component: './managerCenter/deviceList' },
-            { path: '/managerCenter/deviceEventsList', component: './managerCenter/deviceEventsList' },
-          ]
-        }
-      ],
+      routes: {
+        exclude: [
+          /models\//,
+          /services\//,
+          /model\.(t|j)sx?$/,
+          /service\.(t|j)sx?$/,
+          /components\//,
+        ],
+      },
     }],
   ],
   cssLoaderOptions:{
     localIdentName:'[local]'
-  }
+  },
+  routes: routeList
 }

@@ -59,5 +59,42 @@ export default {
                 username: 'mgp'
             }
         });
+    },
+    'POST /getRouteInfo' (req, res) {
+        res.json({
+            code: 0,
+            success: true,
+            message: '获取路由信息成功',
+            data: {
+                '/login': {
+                    right: true,
+                    name: '登陆'
+                },
+                '/managerCenter/userList': {
+                    right: true,
+                    name: '用户列表'
+                },
+                '/managerCenter/userList/userDetail': {
+                    right: true,
+                    name: '用户详情'
+                },
+                '/managerCenter/roleList': {
+                    right: true,
+                    name: '角色列表'
+                },
+                '/managerCenter/rightList': {
+                    right: true,
+                    name: '权限列表'
+                },
+                '/managerCenter/deviceList': {
+                    right: true,
+                    name: '设备列表'
+                },
+                '/managerCenter/deviceEventsList': {
+                    right: true,
+                    name: '设备事件列表'
+                }
+            }
+        });
     }
 }
