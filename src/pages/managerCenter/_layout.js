@@ -10,8 +10,10 @@ function ManagerCenter (props) {
     const { dispatch, auth, page } = props;
     const defaultValue = ['sub1','child1'];
     const [selectValue, setSelectValue] = useState(['sub1','child1']);
+    const [pathNameList, setPathNameList] = useState([]);
     const headerMenuList = page.headerMenuList;
     const sideMenuList = page.sideMenuList;
+    const innerPageList = page.innerPageList;
     useEffect(() => {
         let username = auth.userInfo.username;
         if(!username) {
@@ -19,6 +21,15 @@ function ManagerCenter (props) {
         }
         console.debug('用户名', username);
     }, [auth]);
+    useEffect(() => {
+        console.debug('页面信息', page)
+        let arr = [page.currentHeader.label];
+        page.currentSide.forEach(item => {
+            arr.push(item.label);
+        });
+        setPathNameList(arr);
+        console.debug(pathNameList);
+    }, [page, page.currentHeader, page.currentSide, pathNameList]);
     function changeTabMenu(e) {
         let {key} = e;
     }
@@ -65,10 +76,10 @@ function ManagerCenter (props) {
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>
                     <div className="navigator-bar">
-                        {/* <Breadcrumb className="page-breadcrumb" style={{ margin: '16px 0' }}>
-                            {props.menuPathInfo.pathNameList.map(item => <Breadcrumb.Item key={'list' + item}>{item}</Breadcrumb.Item>)}
+                        <Breadcrumb className="page-breadcrumb" style={{ margin: '16px 0' }}>
+                            {pathNameList.map(item => <Breadcrumb.Item key={'list' + item}>{item}</Breadcrumb.Item>)}
                         </Breadcrumb>
-                        {props.innerPageList.length > 0 && <Button type="primary" onClick={onBack}>返回</Button>} */}
+                        {innerPageList.length > 0 && <Button type="primary" onClick={onBack}>返回</Button>}
                     </div>
                     <Content
                         style={{

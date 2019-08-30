@@ -12,14 +12,17 @@ export default {
                     {
                         value: '1',
                         label: '管理中心',
+                        target: '/managerCenter'
                     },
                     {
                         value: '2',
-                        label: '数据中心'
+                        label: '数据中心',
+                        target: '/dataCenter'
                     },
                     {
                         value: '3',
-                        label: '设置'
+                        label: '设置',
+                        target: '/setting'
                     }
                 ]
             }
