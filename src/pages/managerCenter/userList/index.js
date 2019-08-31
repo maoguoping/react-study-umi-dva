@@ -46,7 +46,7 @@ function UserList (props){
       payload: {}
     });
     getUserList();
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     console.debug('角色列表', roleList);
     const newSearchList = searchList.map(item => {
@@ -56,7 +56,7 @@ function UserList (props){
       return item;
     }) 
     setSearchList(newSearchList);
-  },[roleList]);
+  },[roleList, searchList]);
   function getUserList(info) {
     let params = info || {};
     http.post('/getUserList',params).then(res => {

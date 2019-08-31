@@ -36,7 +36,7 @@ function UserDetail (props) {
             type: 'auth/getRoleList',
             payload: {}
         });
-    }, []);
+    }, [dispatch, loadData, props.history.location]);
     function changeUsername (e) {
         setUserDetailInfo({
             ...userDetailInfo,

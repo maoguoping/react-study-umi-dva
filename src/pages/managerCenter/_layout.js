@@ -22,7 +22,7 @@ function ManagerCenter (props) {
         });
         setPathNameList(arr);
         console.debug(pathNameList);
-    }, [page.currentHeader, page.currentSide]);
+    }, [page, page.currentHeader, page.changeSide]);
     function changeTabMenu(e) {
         let {key} = e;
     }
