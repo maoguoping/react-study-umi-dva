@@ -1,6 +1,5 @@
 export const routeList = [
     { path: '/', component: './index' },
-    { path: '/404', component: './404'},
     { path: '/login', component: './login' },
     {
         path: '/managerCenter', component: './managerCenter/_layout',
@@ -10,7 +9,9 @@ export const routeList = [
             { path: '/managerCenter/roleList', component: './managerCenter/roleList' },
             { path: '/managerCenter/rightList', component: './managerCenter/rightList' },
             { path: '/managerCenter/deviceList', component: './managerCenter/deviceList' },
-            { path: '/managerCenter/deviceEventsList', component: './managerCenter/deviceEventsList' }
+            { path: '/managerCenter/deviceEventsList', component: './managerCenter/deviceEventsList' },
+            { component: './404'},
         ]
-    }
+    },
+    { component: './404'},
 ];

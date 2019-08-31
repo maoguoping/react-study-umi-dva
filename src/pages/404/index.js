@@ -3,8 +3,9 @@ import './style.scss'
 import { Result, Button } from 'antd'
 import { withRouter } from 'react-router';
 function NotFound(props) {
+    console.debug(props.history);
     function back () {
-        props.history.back();
+        props.history.goBack();
     }
     return (
         <div className="not-found-page">

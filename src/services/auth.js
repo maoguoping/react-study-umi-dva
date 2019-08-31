@@ -5,3 +5,6 @@ export async function loginIn (params) {
 export async function getRouteInfo (params) {
     return http.post('/getRouteInfo', params);
 }
+export async function getRoleList (params) {
+    return http.get('/getRoleList', params);
+}

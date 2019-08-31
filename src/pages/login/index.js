@@ -12,7 +12,7 @@ function Login (props) {
     function loginIn(data) {
         let {username, password} = data;
         dispatch({
-            type: 'auth/loginFlow',
+            type: 'auth/login',
             payload: {
                 username
             },

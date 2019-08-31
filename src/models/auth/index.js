@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router'
 import { getLocalStorage, setLocalStorage } from '../../utils/persist'
-import { loginIn, getRouteInfo } from '../../services/auth'
+import { loginIn, getRouteInfo, getRoleList } from '../../services/auth'
 import { parse } from 'qs'
 export default {
   namespace: 'auth',
@@ -8,7 +8,8 @@ export default {
     userInfo: {
       username: '',
     },
-    routeInfo: {}
+    routeInfo: {},
+    roleList: []
   },
   reducers: {
     setUserInfo (state, { payload: userInfo }) {
@@ -24,7 +25,14 @@ export default {
         ...state,
         routeInfo
       };
-    }
+    },
+    setRoleList (state, { payload: roleList }) {
+      console.debug('修改角色信息')
+      return {
+        ...state,
+        roleList
+      };
+    },
   },
   effects: {
     *login({ payload }, { call, put }) {
@@ -37,6 +45,15 @@ export default {
           type: 'setUserInfo',
           payload: payload.userInfo,
         });
+        const { data, success } = yield call(getRouteInfo, {});
+        if (success) {
+          setLocalStorage('userInfo', data);
+          yield put({
+            type: 'setRouteInfo',
+            payload: data,
+          });
+          yield put(routerRedux.push('/'));
+        }
       }
     },
     *logout({ payload }, { call, put }) {
@@ -61,17 +78,6 @@ export default {
         });
       }
     },
-    *loginFlow ({ payload }, { call, put }) {
-      yield put({
-        type: 'login',
-        payload
-      });
-      yield put({
-        type: 'getRouteInfo',
-        payload
-      });
-      yield put(routerRedux.push('/'));
-    },
     *refresh ({ payload }, { call, put }) {
       yield put({
         type: 'setUserInfo',
@@ -83,6 +89,15 @@ export default {
       });
       console.debug('refresh')
     },
+    *getRoleList({ payload }, { call, put }) {
+      const { data, success } = yield call(getRoleList, {});
+      if (success) {
+        yield put({
+          type: 'setRoleList',
+          payload: data.list
+        })
+      }
+    }
   },
   subscriptions: {
     setup({ dispatch,history }) {
@@ -90,11 +105,6 @@ export default {
       if (data) {
         dispatch({
           type: 'refresh',
-          payload: data
-        });
-      } else {
-        dispatch({
-          type: 'init',
           payload: data
         });
       }
