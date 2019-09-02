@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {withRouter } from 'react-router'
 import './style.scss'
 import { message, Button } from 'antd'
@@ -11,6 +11,7 @@ import { connect } from 'dva';
 function UserList (props){
   const { dispatch, auth } = props;
   const { roleList } = auth; 
+  let deleteList = useRef([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchList, setSearchList] = useState([
     {
@@ -39,13 +40,11 @@ function UserList (props){
     text: '确定要删除该用户？',
     type: 'question-circle'
   };
-  let deleteList = [];
   useEffect(() => {
     dispatch({
       type: 'auth/getRoleList',
       payload: {}
     });
-    getUserList();
   }, [dispatch]);
   useEffect(() => {
     console.debug('角色列表', roleList);
@@ -56,7 +55,10 @@ function UserList (props){
       return item;
     }) 
     setSearchList(newSearchList);
-  },[roleList, searchList]);
+  },[roleList]);
+  useEffect(() => {
+    getUserList();
+  }, []);
   function getUserList(info) {
     let params = info || {};
     http.post('/getUserList',params).then(res => {
@@ -67,7 +69,7 @@ function UserList (props){
   }
   function deleteUser() {
     http.get('/deleteUser',{
-      userId: deleteList[0]
+      userId: deleteList.current[0]
     }).then(res => {
       message.success('删除用户成功');
       getUserList();
@@ -75,10 +77,8 @@ function UserList (props){
     })
   }
   function onDeleteUser (e) {
-    console.log('delete', e)
-    deleteList = [];
-    deleteList.push(e.userId);
-    setShowDeleteModal(false);
+    deleteList.current.push(e.userId);
+    setShowDeleteModal(true);
   }
   function onAddUser () {
     router.push(`/managerCenter/userList/userDetail?mode=new`);
@@ -88,7 +88,7 @@ function UserList (props){
     deleteUser();
   }
   function onDeleteCancel (e) {
-    deleteList = [];
+    deleteList.current = [];
     setShowDeleteModal(false);
   }
   function onSearch (e) {

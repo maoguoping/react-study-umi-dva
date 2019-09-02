@@ -10,19 +10,30 @@ function ManagerCenter (props) {
     const { dispatch, auth, page } = props;
     const defaultValue = ['sub1','child1'];
     const [selectValue, setSelectValue] = useState(['sub1','child1']);
-    const [pathNameList, setPathNameList] = useState([]);
+    const [headPathNameList, setHeadPathNameList] = useState([]);
+    const [sidePathNameList, setSidePathNameList] = useState([]);
+    const [innerPathNameList, setInnerPathNameList] = useState([]);
     const headerMenuList = page.headerMenuList;
     const sideMenuList = page.sideMenuList;
     const innerPageList = page.innerPageList;
     useEffect(() => {
-        console.debug('页面信息', page)
         let arr = [page.currentHeader.label];
+        setHeadPathNameList(arr);
+    }, [page.currentHeader]);
+    useEffect(() => {
+        let arr = []
         page.currentSide.forEach(item => {
             arr.push(item.label);
         });
-        setPathNameList(arr);
-        console.debug(pathNameList);
-    }, [page, page.currentHeader, page.changeSide]);
+        setSidePathNameList(arr);
+    }, [page.currentSide]);
+    useEffect(() => {
+        let arr = []
+        page.innerPageList.forEach(item => {
+            arr.push(item.label);
+        });
+        setInnerPathNameList(arr);
+    }, [page.innerPageList]);
     function changeTabMenu(e) {
         let {key} = e;
     }
@@ -70,7 +81,7 @@ function ManagerCenter (props) {
                 <Layout style={{ padding: '0 24px 24px' }}>
                     <div className="navigator-bar">
                         <Breadcrumb className="page-breadcrumb" style={{ margin: '16px 0' }}>
-                            {pathNameList.map(item => <Breadcrumb.Item key={'list' + item}>{item}</Breadcrumb.Item>)}
+                            {[...headPathNameList,...sidePathNameList,...innerPathNameList].map(item => <Breadcrumb.Item key={'list' + item}>{item}</Breadcrumb.Item>)}
                         </Breadcrumb>
                         {innerPageList.length > 0 && <Button type="primary" onClick={onBack}>返回</Button>}
                     </div>

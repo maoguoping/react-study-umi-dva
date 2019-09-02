@@ -108,6 +108,6 @@ export default {
           payload: data
         });
       }
-    }
+    },
   },
 };

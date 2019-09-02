@@ -36,7 +36,7 @@ export default {
         sideMenuList
       };
     },
-    setCurrentHeader(state, { payload: pathname }) {
+    setCurrentHeader(state, { payload: { pathname } }) {
       let currentHeader = null;
       let headerMenuList = state.headerMenuList;
       if (headerMenuList.length > 0) {
@@ -57,7 +57,7 @@ export default {
         currentHeader
       };
     },
-    setCurrentSide(state, { payload: pathname }) {
+    setCurrentSide(state, { payload: { payload: { pathname } } }) {
       let currentSide = null;
       let sideMenuList = state.sideMenuList;
       if (sideMenuList.length > 0) {
@@ -88,6 +88,14 @@ export default {
         ...state,
         currentSide
       };
+    },
+    setInnerPageList(state, { payload: { pathname, routeInfo } }) {
+      console.debug(routeInfo)
+      let innerPageList = [routeInfo.name];
+      return {
+        ...state,
+        innerPageList
+      };
     }
   },
   effects: {
@@ -115,18 +123,34 @@ export default {
       const state = yield select();
       const routeInfo = state.auth.routeInfo;
       console.debug('路由信息', routeInfo);
-      if(Object.keys(routeInfo).lenth > 0) {
-        if(routeInfo[payload]) {
+      if(Object.keys(routeInfo).length > 0) {
+        let path = payload.split('?')[0];
+        let routeInfoValue = routeInfo[path];
+        console.debug('匹配到路由信息', routeInfoValue);
+        if(routeInfoValue) {
           yield put({
             type: 'setCurrentHeader',
-            payload
+            payload: {
+              pathname: payload,
+              routeInfo: routeInfoValue
+            }
           });
           yield put({
             type: 'setCurrentSide',
-            payload
+            payload: {
+              pathname: payload,
+              routeInfo: routeInfoValue
+            }
+          });
+          yield put({
+            type: 'setInnerPageList',
+            payload: {
+              pathname: payload,
+              routeInfo: routeInfoValue
+            }
           });
         } else {
-          yield put(routerRedux.push('/404'));
+          // yield put(routerRedux.push('/404'));
         }
       }
     }
@@ -159,12 +183,16 @@ export default {
           payload: {}
         });
       }
-    },
-    setupHistory({dispatch,history}) {
-      dispatch({
-        type: 'changeHistory',
-        payload: history.location.pathname
-      });
+      history.listen((location) => {
+        console.debug('监听路由变化', location);
+        let pathname = location.pathname;
+        if(pathname.indexOf('/login') !== 0) {
+          dispatch({
+            type: 'changeHistory',
+            payload: pathname
+          });
+        }
+      })
     }
   },
 };

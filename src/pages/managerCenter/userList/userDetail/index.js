@@ -29,14 +29,14 @@ function UserDetail (props) {
         let params = qs.parse(location.search.substring(1));
         console.debug('解析结果', params)
         if (params.mode === 'edit') {
-           loadData()
+           loadData(params.userId)
         }
         setMode(params.mode)
         dispatch({
             type: 'auth/getRoleList',
             payload: {}
         });
-    }, [dispatch, loadData, props.history.location]);
+    }, [dispatch, props.history.location]);
     function changeUsername (e) {
         setUserDetailInfo({
             ...userDetailInfo,
@@ -49,12 +49,9 @@ function UserDetail (props) {
             userTickname: e.target.value
         })
     }
-    function loadData() {
-        let location = props.history.location;
-        let params = qs.parse(location.search.substring(1));
-        console.debug('解析结果', params)
+    function loadData(userId) {
         http.get('/getUserDetailById', {
-            userId: params.userId
+            userId
         }).then(res => {
             console.log(res);
             const data = res.data;
@@ -89,7 +86,7 @@ function UserDetail (props) {
                 userTickname
             }).then(res => {
                 message.success('保存成功');
-                loadData();
+                loadData(userId);
             }).catch(err => {
             })
         } else {

@@ -189,7 +189,7 @@ export default {
     },
     'POST /loginIn' (req, res) {
         let data = qs.parse(req.body);
-        console.log('接口获取', options.url, data);
+        console.log('接口获取', data.url, data);
         for(const o of userList) {
             if (o.userId == data.userId) {
                 o.username = data.username;
