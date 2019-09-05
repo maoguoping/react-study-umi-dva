@@ -68,31 +68,39 @@ export default {
             data: {
                 '/login': {
                     right: true,
-                    name: '登陆'
+                    name: '登陆',
+                    path:  '/login'
                 },
                 '/managerCenter/userList': {
                     right: true,
-                    name: '用户列表'
+                    name: '用户列表',
+                    path: '/managerCenter/userList'
                 },
                 '/managerCenter/userList/userDetail': {
                     right: true,
-                    name: '用户详情'
+                    name: '用户详情',
+                    path: '/managerCenter/userList/userDetail',
+                    isInnerPage: true
                 },
                 '/managerCenter/roleList': {
                     right: true,
-                    name: '角色列表'
+                    name: '角色列表',
+                    path: '/managerCenter/roleList'
                 },
                 '/managerCenter/rightList': {
                     right: true,
-                    name: '权限列表'
+                    name: '权限列表',
+                    path: '/managerCenter/rightList'
                 },
                 '/managerCenter/deviceList': {
                     right: true,
-                    name: '设备列表'
+                    name: '设备列表',
+                    path: '/managerCenter/deviceList'
                 },
                 '/managerCenter/deviceEventsList': {
                     right: true,
-                    name: '设备事件列表'
+                    name: '设备事件列表',
+                    path: '/managerCenter/deviceEventsList'
                 }
             }
         });
@@ -185,6 +193,22 @@ export default {
             success: true,
             message: '获取成功',
             data: arr[0]
+        });
+    },
+    'GET /setUserDetailById' (req, res) {
+        let data = qs.parse(req.query);
+        for(const o of userList) {
+            if (o.userId == data.userId) {
+                o.username = data.username;
+                o.userTickname = data.userTickname;
+                break;
+            }
+        }
+        res.json({
+            code: 0,
+            success: true,
+            message: '设置',
+            data: null
         });
     },
     'POST /loginIn' (req, res) {

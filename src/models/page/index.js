@@ -57,7 +57,7 @@ export default {
         currentHeader
       };
     },
-    setCurrentSide(state, { payload: { payload: { pathname } } }) {
+    setCurrentSide(state, { payload: { pathname }}) {
       let currentSide = null;
       let sideMenuList = state.sideMenuList;
       if (sideMenuList.length > 0) {
@@ -90,8 +90,13 @@ export default {
       };
     },
     setInnerPageList(state, { payload: { pathname, routeInfo } }) {
-      console.debug(routeInfo)
-      let innerPageList = [routeInfo.name];
+      let innerPageList = []; 
+      if (routeInfo.isInnerPage) {
+        innerPageList.push({
+          label: routeInfo.name,
+          value: routeInfo.path
+        });
+      };
       return {
         ...state,
         innerPageList

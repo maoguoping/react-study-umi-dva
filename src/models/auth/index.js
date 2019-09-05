@@ -8,7 +8,7 @@ export default {
     userInfo: {
       username: '',
     },
-    routeInfo: {},
+    routeInfo: null,
     roleList: []
   },
   reducers: {
@@ -71,7 +71,7 @@ export default {
       console.debug('获取权限路由信息', arguments);
       const { data, success } = yield call(getRouteInfo, {});
       if (success) {
-        setLocalStorage('userInfo', data);
+        // setLocalStorage('userInfo', data);
         yield put({
           type: 'setRouteInfo',
           payload: data,

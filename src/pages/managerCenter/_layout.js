@@ -1,21 +1,31 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useLayoutEffect} from 'react'
 import './style.scss'
 import { Layout, Breadcrumb, PageHeader, Button, Icon } from 'antd'
 import HeadBar from '../../components/module/headerBar'
 import SideMenu from '../../components/module/sideMenu'
 import router from 'umi/router';
 import { connect } from 'dva';
+import LoadingPage from '../../components/module/loadingPage'
 const { Content, Sider } = Layout;
 function ManagerCenter (props) {
     const { dispatch, auth, page } = props;
     const defaultValue = ['sub1','child1'];
     const [selectValue, setSelectValue] = useState(['sub1','child1']);
+    const [routeInfoReady, setRouteInfoReady] = useState(true);
     const [headPathNameList, setHeadPathNameList] = useState([]);
     const [sidePathNameList, setSidePathNameList] = useState([]);
     const [innerPathNameList, setInnerPathNameList] = useState([]);
     const headerMenuList = page.headerMenuList;
     const sideMenuList = page.sideMenuList;
     const innerPageList = page.innerPageList;
+    useLayoutEffect(() => {
+        console.debug('setRouteInfoReady', auth.routeInfo)
+        if(auth.routeInfo) {
+            setRouteInfoReady(true);
+        } else {
+            setRouteInfoReady(false);
+        }
+    }, [auth.routeInfo])
     useEffect(() => {
         let arr = [page.currentHeader.label];
         setHeadPathNameList(arr);
@@ -83,7 +93,7 @@ function ManagerCenter (props) {
                         <Breadcrumb className="page-breadcrumb" style={{ margin: '16px 0' }}>
                             {[...headPathNameList,...sidePathNameList,...innerPathNameList].map(item => <Breadcrumb.Item key={'list' + item}>{item}</Breadcrumb.Item>)}
                         </Breadcrumb>
-                        {innerPageList.length > 0 && <Button type="primary" onClick={onBack}>返回</Button>}
+                        {innerPageList.length > 0 && <Button type="primary" onClick={onBack}>返回{routeInfoReady}</Button>}
                     </div>
                     <Content
                         style={{
@@ -93,7 +103,7 @@ function ManagerCenter (props) {
                             minHeight: 280,
                         }}
                     > 
-                     {props.children}
+                    {routeInfoReady ? props.children : <LoadingPage/>}
                     </Content>
                 </Layout>
             </Layout>
